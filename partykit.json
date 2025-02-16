@@ -1,7 +1,11 @@
 {
   "$schema": "https://www.partykit.io/schema.json",
   "name": "3p-party",
-  "main": "party/index.ts",
-  "compatibilityDate": "2025-02-13"
+  "compatibilityDate": "2025-02-13",
+  "main": "party/rooms.ts",
+  "parties": {
+    "room": "party/room.ts",
+    "rooms": "party/rooms.ts"
+  }
 }
 

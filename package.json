@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.12.1",
     "@tailwindcss/postcss": "^4.0.6",
     "@tailwindcss/vite": "^4.0.6",
+    "jwt-decode": "^4.0.0",
     "partysocket": "1.0.3",
     "postcss": "^8.5.2",
     "react": "^19.0.0",
