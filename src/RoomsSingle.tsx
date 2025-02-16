@@ -2,20 +2,15 @@
 
 import React from "react";
 import usePartySocket from "partysocket/react";
+import { IHistoryEntry } from "./types";
 
-interface IHistoryEntry {
-  t: number;
-  id: string;
-  msg: string;
-}
-[];
-
-const PartyUI = (props: { id: string }) => {
+const RoomsSingle = (props: { id: string }) => {
   const [msg, setMsg] = React.useState("");
   const [history, setHistory] = React.useState<IHistoryEntry[]>([]);
 
   const socket = usePartySocket({
     host: "http://localhost:1999",
+    party: "room",
     room: props.id,
     onMessage(event) {
       const message: {
@@ -31,28 +26,29 @@ const PartyUI = (props: { id: string }) => {
       }
     },
     onOpen(event: WebSocketEventMap["open"]) {
-      console.log("OPEN SOCKET!", event);
+      console.log("OPEN SOCKET!");
     },
   });
 
   return (
     <>
-      <div>
-        {history.map((entry, i) => {
+      {/* past message history */}
+      <ul className="list-none p-0 m-0">
+        {history && history.map((entry, i) => {
           return (
-            <>
+            <li key={i}>
               <small className={`w-[100%]`}>
                 {entry.id.slice(0, 8)} -&gt; {entry.msg}
               </small> <br />
-            </>
+            </li>
           );
         })}
-      </div>
+      </ul>
+      {/* send message */}
       <form
         action=""
         onSubmit={(e) => {
           e.preventDefault();
-
           socket.send(JSON.stringify({ msg: msg }));
         }}
       >
@@ -68,4 +64,4 @@ const PartyUI = (props: { id: string }) => {
   );
 };
 
-export default PartyUI;
+export default RoomsSingle;
