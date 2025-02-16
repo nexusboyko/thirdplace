@@ -6,7 +6,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type"
 };
 
-export default class Server implements Party.Server {
+export default class Room implements Party.Server {
   constructor(readonly room: Party.Room) {
     this.connected = []
     this.history = []
@@ -30,15 +30,21 @@ export default class Server implements Party.Server {
         status: 200,
         headers: { "Content-Type": "application/json", ...corsHeaders},
       });
-    } else if (req.method === "POST") {
+    } 
+    
+    else if (req.method === "POST") {
+      
+      // TODO: auth. layer BEFORE action!
+
       const body = await req.json();
       
       if(body) {
-        console.log("Creating party room: " + this.room.id);
-        return new Response(JSON.stringify({ message: `Room created: ${this.room.id}`, id: this.room.id }), {
-          status: 200,
-          headers: { "Content-Type": "application/json", ...corsHeaders },
-        });
+        return this.room.context.parties.rooms.get("list").fetch({
+          method: "POST",
+          body: JSON.stringify({
+            id: this.room.id
+          })
+        })
       }
 
       return new Response("Invalid request", {
@@ -97,4 +103,4 @@ export default class Server implements Party.Server {
   }
 }
 
-Server satisfies Party.Worker;
+Room satisfies Party.Worker;
